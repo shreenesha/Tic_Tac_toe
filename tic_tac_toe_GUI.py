@@ -204,7 +204,7 @@ class TicTacToeElite:
                 self.scores[winner] += 1
                 # CHANGE: Using real names in result text
                 if winner == "X":
-                    result_text = f"{self.user_name.upper()} WINS! MISSION ACCOMPLISHED!"
+                    result_text = f"{self.user_name.upper()} WINS!"
                 else:
                     opp = "PLAYER 2" if self.game_mode == "PVP" else "COMPUTER"
                     result_text = f"{opp} WINS! SYSTEM BREACHED!"
