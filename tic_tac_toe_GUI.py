@@ -72,7 +72,7 @@ class TicTacToeElite:
         self.user_avatar = self.avatar_var.get()
         self.main_menu()
 
-    # --- 2. MAIN MENU (STYLIZED) ---
+    # --- 2. MAIN MENU ---
     def main_menu(self):
         self.clear_screen()
         
@@ -81,7 +81,6 @@ class TicTacToeElite:
         tk.Label(header, text=f"{self.user_avatar} AGENT: {self.user_name.upper()}", font=("Verdana", 9, "bold"), 
                  bg="#10182d", fg="#00d4ff").pack()
 
-        # Typewriter Title for Main Menu
         menu_title = tk.Label(self.root, text="", font=("Impact", 50), bg="#050a18", fg="white", pady=50)
         menu_title.pack()
         self.type_text(menu_title, "TIC-TAC-TOE")
@@ -96,7 +95,6 @@ class TicTacToeElite:
         battle_btn.bind("<Enter>", lambda e: on_enter(e, "#253556"))
         battle_btn.bind("<Leave>", lambda e: on_leave(e, "#1a263f"))
 
-        # --- AI TEXT LABEL ABOVE MODES ---
         tk.Label(self.root, text="PLAY WITH COMPUTER", font=("Verdana", 9, "bold"), bg="#050a18", fg="#4a5d8a").pack(pady=10)
         
         modes = [("EASY MODE", "#00ff88", "1"), ("TACTICAL", "#ffcc00", "2"), ("IMPOSSIBLE", "#ff4b2b", "3")]
@@ -109,7 +107,7 @@ class TicTacToeElite:
                             relief="flat", cursor="hand2", command=self.root.quit)
         exit_btn.pack(side=tk.BOTTOM, pady=30)
 
-    # --- 3. GAME INTERFACE (Logic remains unchanged) ---
+    # --- 3. GAME INTERFACE ---
     def start_game(self, mode, diff="3"):
         self.game_mode = mode
         self.difficulty = diff
@@ -204,11 +202,17 @@ class TicTacToeElite:
             self.game_active = False
             if winner: 
                 self.scores[winner] += 1
-                result_text = "MISSION ACCOMPLISHED!" if winner == "X" else "SYSTEM BREACHED!"
+                # CHANGE: Using real names in result text
+                if winner == "X":
+                    result_text = f"{self.user_name.upper()} WINS! MISSION ACCOMPLISHED!"
+                else:
+                    opp = "PLAYER 2" if self.game_mode == "PVP" else "COMPUTER"
+                    result_text = f"{opp} WINS! SYSTEM BREACHED!"
+                
                 self.status_label.config(text=result_text, fg="#ffcc00")
             else: 
                 self.scores["Draws"] += 1
-                self.status_label.config(text="DATA STALEMATE", fg="#5f7adb")
+                self.status_label.config(text="DATA STALEMATE (DRAW)", fg="#5f7adb")
             
             self.update_score_label()
             
@@ -220,7 +224,9 @@ class TicTacToeElite:
         return False
 
     def update_score_label(self):
-        self.score_label.config(text=f"AGENT: {self.scores['X']}   |   CORE: {self.scores['O']}   |   DRAW: {self.scores['Draws']}")
+        # CHANGE: Replaced "AGENT" and "CORE" with real names
+        player2_label = "PLAYER 2" if self.game_mode == "PVP" else "COMPUTER"
+        self.score_label.config(text=f"{self.user_name.upper()}: {self.scores['X']}   |   {player2_label}: {self.scores['O']}   |   DRAW: {self.scores['Draws']}")
 
 if __name__ == "__main__":
     root = tk.Tk()
